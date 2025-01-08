@@ -145,29 +145,11 @@ Se implementa en `useServices.jsx` y `useDoctors.jsx`:
 ```jsx
 const isFirstRender = useRef(true);
 ```
-Se usa useRef para rastrear si es la primera renderización.
-
-Solo se hace la petición en el montaje inicial o cuando hay un trigger explícito.
 
 - Cancelación de peticiones pendientes:
 ```jsx
 const abortController = useRef(null);
 ```
-Se usa AbortController para cancelar peticiones pendientes.
-
-Se evitan actualizaciones de estado innecesarias.
-
-- Función Cleanup:
-```jsx
-return () => {
-  if (abortController.current) {
-    abortController.current.abort();
-  }
-};
-```
-Se limpian las peticiones pendientes cuando el componente se desmonta.
-
-Se evitan los memory leaks y actualizaciones en componentes desmontados.
 
 - Manejo optimizado de errores:
 ```jsx
@@ -175,9 +157,6 @@ if (error.name !== 'AbortError') {
   setError(error.message);
 }
 ```
-No se muestran errores por cancelaciones intencionales.
-
-Mejora la experiencia de usuario.
 
 - Dependencias mínimas en useEffect:
 ```jsx
@@ -187,20 +166,8 @@ useEffect(() => {
   }
 }, [fetchServices, refreshTrigger]);
 ```
-Solo las dependencias necesarias están incluidas.
-
-Se evitan ciclos infinitos y re-renders innecesarios.
 
 
-- Memoización de la función de fetch:
-```jsx
-const fetchServices = useCallback(async () => {
-  // ...
-}, []);
-```
-La función se mantiene estable entre renders.
-
-Se evita re-renders innecesarios.
 
 ## 📱 Responsive Design
 El sistema está diseñado para funcionar en:
